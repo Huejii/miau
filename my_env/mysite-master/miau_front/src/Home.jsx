@@ -3,7 +3,7 @@ import styled from "styled-components";
 // import Search from "./component/Search";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-import { Application } from '@splinetool/runtime';
+// import { Application } from '@splinetool/runtime';
 import Map from './component/Map'
 
 const MenuButton = styled.button`
@@ -103,16 +103,16 @@ const Home = () => {
   // 키워드검색
   const canvasRef = useRef(null);
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const canvas = document.getElementById('canvas3d');
-    const app = new Application(canvas);
-    app.load('https://prod.spline.design/udDTYOYkY6B6sTbl/scene.splinecode');
+  //   const canvas = document.getElementById('canvas3d');
+  //   const app = new Application(canvas);
+  //   app.load('https://prod.spline.design/udDTYOYkY6B6sTbl/scene.splinecode');
     
     
     
     
-  }, []);
+  // }, []);
 
   const handleShortcutClick = (keyword) => {
     navigate(`/search`, { state: { searchKeyword: keyword } });
