@@ -1,0 +1,41 @@
+{% extends 'mysite/main.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+
+    <meta charset="UTF-8">
+
+
+</head>
+<body>
+
+
+    {% block updated %}
+        <h1> 위키 수정페이지</h1>
+
+    <br>
+        <div class="container">
+        <form method="POST" action="{%  url 'place_edit' place_id=place_id %}">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+          <input class="btn btn-dark" type="submit" value="Edit">
+      </form>
+
+
+            </div>
+{#    <div class="container">#}
+{#        <form method="POST" action="{%  url 'place_edit' place_id=place_id %}">#}
+{#          {% csrf_token %}#}
+{#            {{ form.wiki}}#}
+{##}
+{#          <input class="btn btn-dark" type="submit" value="Edit">#}
+{#      </form>#}
+{#    </div>#}
+    {% endblock updated%}
+
+
+</body>

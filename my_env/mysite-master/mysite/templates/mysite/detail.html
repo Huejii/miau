@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ {% extends 'mysite/main.html' %}
+
+
+
+    {% block details %}
+
+
+
+            <form method="GET" action="{% url 'details' place_id=place_detail.id %}">
+
+            <div class="container">
+
+                <h1>상세정보</h1>
+                <br>
+                <br>
+                <br>
+                <br>
+{#            {#}
+{#                    'target': "",#}
+{#                    'name': "Hyeganggwan 101",#}
+{#                    'id': 250,#}
+{#                    'href': "",#}
+{#                    'coords': "17,2132,450,2479",#}
+{#                    'shape': "rect"},#}
+{#                {{#}
+{#                    'target': "",#}
+{#                    'name': "Hyeganggwan 102",#}
+{#                    'id': 251,#}
+{#                    'href': "",#}
+{#                    'coords': "11,1490,444,1990",#}
+{#                    'shape': "rect"},#}
+{#                {#}
+                {% if place_detail.image.url %}
+{#                    2d도면도 <img class= "image" src="{{ place_detail.image.url }}" style="height: 100%; width: 100%;"/> <br>#}
+
+                    <h1>Floor Map</h1>
+                    <div id="image-container" style="position: relative;">
+                            <img
+                              id="floor-map-img"
+                              src="{{ place_detail.image.url }}"
+                              alt="Floor Map"
+                              style="width: 100%; height: auto;"
+                              usemap="#Map"
+                             />
+
+                              <map name="Map" id="map">
+                                <area name='101'shape="rect" coords="17,2132,450,2479" onclick="handleClick('101')" />
+                                <area name='102' shape="rect" coords="11,1490,444,1990" onclick="handleClick('102')" />
+                              </map>
+                    </div>
+                    <script>
+
+
+     function convertCoords() {
+      const image = document.getElementById('floor-map-img');
+      const containerWidth = image.clientWidth;
+      const containerHeight = image.clientHeight;
+      const originalWidth = image.naturalWidth;
+      const originalHeight = image.naturalHeight;
+      const widthRatio = originalWidth / containerWidth;
+      const heightRatio = originalHeight / containerHeight;
+
+      const areas = document.querySelectorAll('#map area');
+      areas.forEach(area => {
+        const originalCoords = area.getAttribute('coords');
+        const coordsArray = originalCoords.split(',').map(coord => parseInt(coord));
+        const convertedCoords = coordsArray.map((coord, index) => {
+          if (index % 2 === 0) {
+            return Math.round(coord / widthRatio);
+          } else {
+            return Math.round(coord / heightRatio);
+          }
+        });
+        const newCoords = convertedCoords.join(',');
+        area.setAttribute('coords', newCoords);
+        console.log('new coords', newCoords)
+      });
+    }
+    convertCoords()
+     let currentMarker = null;
+    function handleClick(areaName) {
+         if (currentMarker) {
+    currentMarker.remove();
+  }
+
+         const marker = document.createElement('div');
+  marker.style.position = 'absolute';
+  marker.style.left = '0';
+  marker.style.top = '0';
+  marker.style.width = '20px';
+  marker.style.height = '20px';
+  marker.style.background = 'red';
+  marker.style.align= 'center'
+
+  // 마커 위치 설정 (예시로 중앙에 위치하도록 설정)
+   const areaElement = document.querySelector(`area[name='${areaName}']`);
+  const coords = areaElement.coords.split(',');
+  const x1 = parseInt(coords[0]);
+  const y1 = parseInt(coords[1]);
+  const x2 = parseInt(coords[2]);
+  const y2 = parseInt(coords[3]);
+  const centerX = (x1 + x2) / 2;
+  const centerY = (y1 + y2) / 2;
+  marker.style.left = centerX + 'px';
+  marker.style.top = centerY + 'px';
+
+  // 이미지 컨테이너에 마커 추가
+  const imageContainer = document.getElementById('image-container');
+  imageContainer.appendChild(marker);
+  currentMarker = marker;
+      }
+
+
+
+
+</script>
+                {% endif %}
+
+                건물명 : {{ place_detail.building_name }}<br>
+                호수 : {{ place_detail.loc_num }} <br>
+                층수 : {{ place_detail.floor }}<br>
+                {% if place_detail.location %}
+                    장소 : {{ place_detail.location }}<br>
+                {% endif %}
+                분류 : {{ place_detail.category }}
+
+                <br>
+                {% if place_detail.explain %}
+                    기본정보 : {{place_detail.explain}} <br>
+                {% endif %}
+                <br>
+                <br>
+{#                위키 :{{ place_detail.wiki }} <br>#}
+
+
+
+
+            </div>
+
+
+
+                                <a href="{%  url 'place_edit' place_id=place_detail.id %}"  class="btn btn-dark"> 위키 Edit </a> <br>
+
+
+            </form>
+
+
+
+
+
+
+    {% endblock %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<script src="http://mattstow.com/experiment/responsive-image-maps/jquery.rwdImageMaps.min.js"></script>
+
+<script>
+
+$(function(){
+
+	$('img[usemap]').rwdImageMaps();
+
+	$("#img").width("100%");
+
+});
+
+</script>
+</body>
+</html>
+
+

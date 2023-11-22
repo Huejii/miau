@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+   {% extends 'mysite/main.html' %}
+
+
+
+    {% block contents %}
+        {% if placeinfo %}        <!--# 만약, 검색창에 입력한 값이 있다면 이라는 의미입니다.-->
+
+
+                {% for place in placeinfo %} <!-- 검색결과가 여러 개 일경우 -->
+                    <div class="border" style="background-color: white;width: 480px; height: 480px">
+                    {% if place.image %}
+                        <img class= "image" src="{{ place.image.url }}" style="height: 50%; width: 50%;"/> <br>
+                    {% endif %}
+
+
+
+                        {{ place.location }} <br>
+
+
+                        {{ place.building_name }} <br>
+
+
+
+                    <br>
+                    <br>
+                    <br>
+                    <a href="{% url 'details' place.id %}">상세보기 </a> <br>
+
+                    </div>
+
+                {% endfor %}
+        {% else %}        # 검색결과가 없습니다.
+                <h1> 키워드 검색 시 한글,영어, 숫자를 입력해주세요 </h1>
+        {% endif %}
+
+
+
+{% endblock contents %}
+
+
+</body>
+</html>
